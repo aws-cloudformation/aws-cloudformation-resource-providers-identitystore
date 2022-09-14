@@ -8,8 +8,8 @@ import java.net.URI;
 public class ClientBuilder {
 
   /**
-   * Create an IdentityStore Client
-   * @return IdentityStoreClient
+   * Create an Identitystore Client
+   * @return IdentitystoreClient
    */
   public static IdentitystoreClient getClient() {
     return IdentitystoreClient.builder()
