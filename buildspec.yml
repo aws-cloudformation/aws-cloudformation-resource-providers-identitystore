@@ -15,5 +15,6 @@ phases:
       - cd "$CODEBUILD_SRC_DIR"
       - cd "aws-identitystore-common"
       - mvn clean verify --no-transfer-progress
+      - cd "$CODEBUILD_SRC_DIR"
       - cd "aws-identitystore-group"
       - mvn clean verify --no-transfer-progress
