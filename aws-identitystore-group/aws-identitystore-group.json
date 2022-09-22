@@ -40,6 +40,9 @@
   "readOnlyProperties": [
     "/properties/GroupId"
   ],
+  "createOnlyProperties": [
+    "/properties/IdentityStoreId"
+  ],
   "primaryIdentifier": [
     "/properties/GroupId",
     "/properties/IdentityStoreId"
