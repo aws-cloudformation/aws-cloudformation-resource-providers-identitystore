@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>software.amazon.identitystore.common</groupId>
+    <groupId>software.amazon.identitystore</groupId>
     <artifactId>aws-identitystore-common</artifactId>
     <name>aws-identitystore-common</name>
     <version>1.0-SNAPSHOT</version>
@@ -57,26 +57,22 @@
                 <configuration>
                     <compilerArgs>
                         <arg>-Xlint:all,-options,-processing</arg>
-                        <arg>-Werror</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.4</version>
+                <version>0.8.6</version>
                 <configuration>
                     <excludes>
                     </excludes>
@@ -105,12 +101,7 @@
                                     <element>PACKAGE</element>
                                     <limits>
                                         <limit>
-                                            <counter>BRANCH</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.8</minimum>
-                                        </limit>
-                                        <limit>
-                                            <counter>INSTRUCTION</counter>
+                                            <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
                                             <minimum>0.8</minimum>
                                         </limit>
