@@ -2,7 +2,7 @@
 
 Usage
 -----
-This package contains resource handlers for following Resources
+This package contains resource handlers for following resources
 - AWS::IdentityStore::Group
 - AWS::IdentityStore::GroupMembership
 
