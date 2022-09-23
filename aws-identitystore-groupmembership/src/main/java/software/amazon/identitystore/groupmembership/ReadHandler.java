@@ -17,7 +17,7 @@ public class ReadHandler extends BaseHandlerStd {
             final Logger logger) {
 
         final ResourceModel model = request.getDesiredResourceState();
-        logger.log(String.format("Invoking Read GroupMembership Handler with MembershipId [%s]", model.getPrimaryIdentifier()));
+        logger.log(String.format("Invoking ReadGroupMembership Handler with MembershipId [%s]", model.getMembershipId()));
 
         return proxy.initiate("AWS-IdentityStore-GroupMembership::READ", proxyClient, model, callbackContext)
                 .translateToServiceRequest(Translator::translateToDescribeGroupMembershipRequest)

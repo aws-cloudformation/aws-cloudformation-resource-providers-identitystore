@@ -3,6 +3,7 @@ package software.amazon.identitystore.group;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import software.amazon.awssdk.core.document.Document;
+import software.amazon.awssdk.services.identitystore.model.AttributeOperation;
 import software.amazon.awssdk.services.identitystore.model.CreateGroupRequest;
 import software.amazon.awssdk.services.identitystore.model.DeleteGroupRequest;
 import software.amazon.awssdk.services.identitystore.model.DescribeGroupRequest;
@@ -67,14 +68,14 @@ public class Translator {
     }
 
     static List<ResourceModel> translateFromListResponse(final ListGroupsResponse response) {
-        return  response.groups()
+        return response.groups()
                 .stream()
                 .map(group -> translateFromListGroupResponse(group))
                 .collect(Collectors.toList());
     }
 
     static ResourceModel translateFromListGroupResponse(final Group group) {
-        return  ResourceModel.builder()
+        return ResourceModel.builder()
                 .groupId(group.groupId())
                 .identityStoreId(group.identityStoreId())
                 .description(group.description())
@@ -90,23 +91,20 @@ public class Translator {
                 .build();
     }
 
-    private static List<software.amazon.awssdk.services.identitystore.model.AttributeOperation> convertAttributesToOperation(
-            ResourceModel model) {
-        List<software.amazon.awssdk.services.identitystore.model.AttributeOperation> operationList = new ArrayList<>();
-
+    private static List<AttributeOperation> convertAttributesToOperation(ResourceModel model) {
+        List<AttributeOperation> operationList = new ArrayList<>();
         operationList.add(convertToOperation(DESCRIPTION, model.getDescription()));
         operationList.add(convertToOperation(DISPLAY_NAME, model.getDisplayName()));
         return operationList;
     }
 
-    private static software.amazon.awssdk.services.identitystore.model.AttributeOperation convertToOperation(
-            String attributePath,  String attributeValue) {
+    private static AttributeOperation convertToOperation(String attributePath,  String attributeValue) {
         if (Objects.isNull(attributeValue)) {
-            return software.amazon.awssdk.services.identitystore.model.AttributeOperation.builder()
+            return AttributeOperation.builder()
                 .attributePath(attributePath)
                 .build();
         }
-        return software.amazon.awssdk.services.identitystore.model.AttributeOperation.builder()
+        return AttributeOperation.builder()
                 .attributePath(attributePath)
                 .attributeValue(Document.fromString(attributeValue))
                 .build();

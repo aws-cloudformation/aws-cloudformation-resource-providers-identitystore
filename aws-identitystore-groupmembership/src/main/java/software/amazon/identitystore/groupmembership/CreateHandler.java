@@ -20,7 +20,7 @@ public class CreateHandler extends BaseHandlerStd {
         this.logger = logger;
         final ResourceModel resourceModel = request.getDesiredResourceState();
 
-        logger.log(String.format("Invoking Create GroupMembership Handler with IdentityStore [%s]", resourceModel.getIdentityStoreId()));
+        logger.log(String.format("Invoking CreateGroupMembership Handler with IdentityStore [%s]", resourceModel.getIdentityStoreId()));
 
         return ProgressEvent.progress(resourceModel, callbackContext)
             .then(progress ->

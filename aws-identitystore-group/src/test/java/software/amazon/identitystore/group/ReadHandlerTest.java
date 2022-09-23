@@ -95,20 +95,6 @@ public class ReadHandlerTest {
     }
 
     @Test
-    public void testHandleRequest_whenNullRequest_throwsNullPointerException() {
-        final ResourceModel model = ResourceModel.builder()
-                .build();
-
-        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
-                .desiredResourceState(model)
-                .build();
-        assertThrows(
-                NullPointerException.class,
-                () -> handler.handleRequest(proxy, request, new CallbackContext(), proxyClient, logger)
-        );
-    }
-
-    @Test
     public void testHandlerRequest_whenResourceNotFound_throwsCfnNotFoundException() {
         final ResourceModel model = ResourceModel.builder()
                 .identityStoreId(TEST_IDENTITY_STORE_ID)
