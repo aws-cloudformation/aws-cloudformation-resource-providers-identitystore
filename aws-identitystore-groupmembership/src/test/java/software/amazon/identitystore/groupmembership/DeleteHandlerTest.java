@@ -1,15 +1,11 @@
 package software.amazon.identitystore.groupmembership;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.identitystore.IdentitystoreClient;
 import software.amazon.awssdk.services.identitystore.model.DeleteGroupMembershipRequest;
 import software.amazon.awssdk.services.identitystore.model.DeleteGroupMembershipResponse;
 import software.amazon.awssdk.services.identitystore.model.DescribeGroupMembershipRequest;
 import software.amazon.awssdk.services.identitystore.model.DescribeGroupMembershipResponse;
+import software.amazon.awssdk.services.identitystore.model.DescribeGroupRequest;
 import software.amazon.awssdk.services.identitystore.model.ResourceNotFoundException;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
@@ -20,10 +16,14 @@ import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.ProxyClient;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
-import software.amazon.identitystore.groupmembership.CallbackContext;
-import software.amazon.identitystore.groupmembership.DeleteHandler;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Duration;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

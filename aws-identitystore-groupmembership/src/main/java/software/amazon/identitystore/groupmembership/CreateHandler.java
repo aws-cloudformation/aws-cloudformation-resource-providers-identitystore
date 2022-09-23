@@ -18,14 +18,25 @@ public class CreateHandler extends BaseHandlerStd {
         final Logger logger) {
 
         this.logger = logger;
-        final ResourceModel model = request.getDesiredResourceState();
+        final ResourceModel resourceModel = request.getDesiredResourceState();
 
-        logger.log(String.format("Invoking Create GroupMembership Handler with IdentityStore [%s]", model.getIdentityStoreId()));
+        logger.log(String.format("Invoking Create GroupMembership Handler with IdentityStore [%s]", resourceModel.getIdentityStoreId()));
 
-        return proxy.initiate("AWS-IdentityStore-GroupMembership::Create", proxyClient, model, callbackContext)
-                .translateToServiceRequest(Translator::translateToCreateRequest)
-                .makeServiceCall((createRequest, clientProxy)
+        return ProgressEvent.progress(resourceModel, callbackContext)
+            .then(progress ->
+                proxy.initiate("AWS-IdentityStore-GroupMembership::Create", proxyClient, progress.getResourceModel(), callbackContext)
+                    .translateToServiceRequest(Translator::translateToCreateRequest)
+                    .makeServiceCall((createRequest, clientProxy)
                         -> invoke(createRequest, clientProxy, clientProxy.client()::createGroupMembership, logger))
-                .done(response -> ProgressEvent.defaultSuccessHandler(Translator.translateFromCreateResponse(model, response)));
+                        // Using stabilize to pass the groupID of the newly created group from the Create API to the Read API.
+                    .stabilize((createRequest, createResponse, clientProxy, model, context) -> {
+                        model.setMembershipId(createResponse.membershipId());
+                        model.setIdentityStoreId(createResponse.identityStoreId());
+                        return true;
+                    })
+                    .progress()
+            )
+            // describe call to return the resource model
+            .then(response -> new ReadHandler().handleRequest(proxy, request, callbackContext, proxyClient, logger));
     }
 }

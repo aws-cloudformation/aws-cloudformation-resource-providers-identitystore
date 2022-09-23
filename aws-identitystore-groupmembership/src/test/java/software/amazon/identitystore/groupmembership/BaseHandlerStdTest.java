@@ -12,7 +12,6 @@ import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Credentials;
 import software.amazon.cloudformation.proxy.LoggerProxy;
 import software.amazon.cloudformation.proxy.ProxyClient;
-import software.amazon.identitystore.groupmembership.BaseHandlerStd;
 
 import java.time.Duration;
 import java.util.function.Function;

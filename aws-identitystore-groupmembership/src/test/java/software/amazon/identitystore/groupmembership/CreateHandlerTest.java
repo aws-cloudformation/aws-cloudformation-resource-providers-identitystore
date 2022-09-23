@@ -1,14 +1,12 @@
 package software.amazon.identitystore.groupmembership;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.AfterEach;
 import software.amazon.awssdk.services.identitystore.IdentitystoreClient;
 import software.amazon.awssdk.services.identitystore.model.ConflictException;
 import software.amazon.awssdk.services.identitystore.model.CreateGroupMembershipRequest;
 import software.amazon.awssdk.services.identitystore.model.CreateGroupMembershipResponse;
+import software.amazon.awssdk.services.identitystore.model.DescribeGroupMembershipRequest;
+import software.amazon.awssdk.services.identitystore.model.DescribeGroupMembershipResponse;
 import software.amazon.cloudformation.exceptions.CfnGeneralServiceException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Credentials;
@@ -17,19 +15,25 @@ import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.ProxyClient;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
-import software.amazon.identitystore.groupmembership.CallbackContext;
-import software.amazon.identitystore.groupmembership.CreateHandler;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static software.amazon.identitystore.groupmembership.TestConstants.TEST_GROUP_ID;
 import static software.amazon.identitystore.groupmembership.TestConstants.TEST_IDENTITY_STORE_ID;
 import static software.amazon.identitystore.groupmembership.TestConstants.TEST_MEMBERSHIP_ID;
 import static software.amazon.identitystore.groupmembership.TestConstants.TEST_MEMBER_ID_WITH_USER;
+import static software.amazon.identitystore.groupmembership.TestConstants.TEST_MODEL_MEMBER_ID_WITH_USER;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateHandlerTest {
@@ -51,6 +55,11 @@ public class CreateHandlerTest {
         proxyClient = proxy.newProxy(() -> identitystoreClient);
     }
 
+    @AfterEach
+    public void post_execute() {
+        verify(identitystoreClient, times(1)).createGroupMembership(any(CreateGroupMembershipRequest.class));
+    }
+
     @Test
     public void handleRequest_success() {
         final CreateGroupMembershipResponse createGroupMembershipResponse = CreateGroupMembershipResponse.builder()
@@ -58,8 +67,17 @@ public class CreateHandlerTest {
                 .identityStoreId(TEST_IDENTITY_STORE_ID)
                 .build();
 
+        final DescribeGroupMembershipResponse describeGroupMembershipResponse = DescribeGroupMembershipResponse.builder()
+                .membershipId(TEST_MEMBERSHIP_ID)
+                .identityStoreId(TEST_IDENTITY_STORE_ID)
+                .groupId(TEST_GROUP_ID)
+                .memberId(TEST_MODEL_MEMBER_ID_WITH_USER)
+                .build();
+
         when(proxyClient.client().createGroupMembership(any(CreateGroupMembershipRequest.class)))
                 .thenReturn(createGroupMembershipResponse);
+        when(proxyClient.client().describeGroupMembership(any(DescribeGroupMembershipRequest.class)))
+                .thenReturn(describeGroupMembershipResponse);
 
         final ResourceModel model = ResourceModel.builder()
                 .identityStoreId(TEST_IDENTITY_STORE_ID)
