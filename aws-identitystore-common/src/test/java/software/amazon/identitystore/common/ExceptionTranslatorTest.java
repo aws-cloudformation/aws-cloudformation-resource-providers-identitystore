@@ -77,8 +77,8 @@ public class ExceptionTranslatorTest {
     public void testHandleCommonExceptions_IdentityStoreException() {
         Exception e = IdentitystoreException.builder()
                 .awsErrorDetails(AwsErrorDetails.builder()
-                        .errorCode("IdentityStoreException")
-                        .build())
+                    .errorCode("IdentitystoreException")
+                    .build())
                 .statusCode(403)
                 .build();
         assertThrows(CfnGeneralServiceException.class, () ->

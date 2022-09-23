@@ -71,7 +71,8 @@
   "handlers": {
     "create": {
       "permissions": [
-        "identitystore:CreateGroupMembership"
+        "identitystore:CreateGroupMembership",
+        "identitystore:DescribeGroupMembership"
       ]
     },
     "read": {

@@ -25,14 +25,14 @@ public class DeleteHandler extends BaseHandlerStd {
         try {
             final DescribeGroupMembershipRequest describeRequest = Translator.translateToDescribeGroupMembershipRequest(model);
 
-            logger.log(String.format("Describing GroupMembership before deleting Member with Id [%s]", model.getPrimaryIdentifier()));
+            logger.log(String.format("Describing GroupMembership before deleting Membership with Id [%s]", model.getMembershipId()));
             proxyClient.injectCredentialsAndInvokeV2(describeRequest, proxyClient.client()::describeGroupMembership);
         } catch (Exception e) {
             logger.log(String.format("Exception caught when describing Resource [%s] with ID [%s]", ResourceModel.TYPE_NAME, model.getMembershipId()));
             ExceptionTranslator.translateToCfnException(e, ResourceModel.TYPE_NAME);
         }
 
-        logger.log(String.format("Invoked DeleteGroupMembership Handler with MembershipId [%s]", model.getPrimaryIdentifier()));
+        logger.log(String.format("Invoked DeleteGroupMembership Handler with MembershipId [%s]", model.getMembershipId()));
 
         return  proxy.initiate("AWS-IdentityStore-GroupMembership::Delete", proxyClient, model, callbackContext)
                 .translateToServiceRequest(Translator::translateToDeleteGroupMembershipRequest)

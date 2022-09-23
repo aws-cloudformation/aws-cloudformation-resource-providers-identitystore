@@ -13,7 +13,7 @@ public class ClientBuilder {
    */
   public static IdentitystoreClient getClient() {
     return IdentitystoreClient.builder()
-            .httpClient(LambdaWrapper.HTTP_CLIENT)
-            .build();
+        .httpClient(LambdaWrapper.HTTP_CLIENT)
+        .build();
   }
 }

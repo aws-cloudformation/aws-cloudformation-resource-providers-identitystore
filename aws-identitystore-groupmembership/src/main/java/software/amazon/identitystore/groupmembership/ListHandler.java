@@ -20,7 +20,7 @@ public class ListHandler extends BaseHandlerStd {
 
         final ResourceModel resourceModel = request.getDesiredResourceState();
 
-        logger.log(String.format("Invoked DeleteGroupMembership Handler with MembershipId [%s]", resourceModel.getPrimaryIdentifier()));
+        logger.log(String.format("Invoked ListGroupMembership Handler with IdentityStoreId [%s]", resourceModel.getIdentityStoreId()));
 
         return proxy.initiate("AWS-IdentityStore-GroupMembership::List", proxyClient, resourceModel, callbackContext)
                 .translateToServiceRequest((model)
